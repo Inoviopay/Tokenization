@@ -84,7 +84,7 @@ TIMESTAMP_TOLERANCE=300
 **Request:**
 ```json
 {
-  "cardPan": "5120342233150747"
+  "cardPan": "409159111111111"
 }
 ```
 
@@ -137,11 +137,9 @@ Use these test cards for testing the tokenization flow:
 
 | Card Number | Expiry | CVV | Notes |
 |-------------|--------|-----|-------|
-| 5120342233150747 | 1229 | 123 | Test card - signature verification requires real card numbers |
-| 5454545454545454 | 1229 | 123 | Test card - signature verification requires real card numbers |
-| 4111111111111111 | 1229 | 123 | Test card - signature verification requires real card numbers |
+| 409159111111111 | 1229 | 123 | Test card with valid BIN - signature verification will succeed |
 
-**Important:** Signature verification will only succeed with real, valid card numbers. Test cards above will generate tokens but may fail signature verification.
+**Note:** This test card uses a valid 6-digit BIN (409159) which allows signature verification to succeed.
 
 ## Integration Examples
 
@@ -150,7 +148,7 @@ Use these test cards for testing the tokenization flow:
 ```bash
 curl -X POST http://localhost:3000/api/generate-token \
   -H "Content-Type: application/json" \
-  -d '{"cardPan": "5120342233150747"}'
+  -d '{"cardPan": "409159111111111"}'
 ```
 
 ### JavaScript/Fetch
@@ -162,7 +160,7 @@ const response = await fetch('http://localhost:3000/api/generate-token', {
     'Content-Type': 'application/json'
   },
   body: JSON.stringify({
-    cardPan: '5120342233150747'
+    cardPan: '409159111111111'
   })
 });
 
@@ -176,7 +174,7 @@ console.log('Token:', data.token.TOKEN_GUID);
 const axios = require('axios');
 
 const response = await axios.post('http://localhost:3000/api/generate-token', {
-  cardPan: '5120342233150747'
+  cardPan: '409159111111111'
 });
 
 console.log('Token:', response.data.token.TOKEN_GUID);

@@ -139,7 +139,7 @@ X-SIGNATURE = HMAC_SHA256_HEX("Password123", message)
 
 **Full Request:**
 ```http
-GET https://api.inoviopay.com/payment/token_service.cfm?CARD_PAN=5120342233150747&REQUEST_API_VERSION=2.22&UNIQUE_ID=32123456789012345678901234567890&SITE_ID=9201&REQUEST_RESPONSE_FORMAT=json
+GET https://api.inoviopay.com/payment/token_service.cfm?CARD_PAN=409159111111111&REQUEST_API_VERSION=2.22&UNIQUE_ID=32123456789012345678901234567890&SITE_ID=9201&REQUEST_RESPONSE_FORMAT=json
 X-SIGNATURE: 9cdc12c09f2fdb114167cad6fa451aeaa37c4df446720cae9805bf1e60e0603f
 X-TIMESTAMP: 20250129225200
 ```
@@ -593,11 +593,9 @@ function verifyResponseSignature(secretKey, receivedSignature,
 
 | Card Number         | Expiry | CVV | Notes |
 |---------------------|--------|-----|-------|
-| 5120342233150747    | 1229   | 123 | Test card - signature verification requires real card numbers |
-| 5454545454545454    | 1229   | 123 | Test card - signature verification requires real card numbers |
-| 4111111111111111    | 1229   | 123 | Test card - signature verification requires real card numbers |
+| 409159111111111     | 1229   | 123 | Test card with valid BIN - signature verification will succeed |
 
-**Important:** Signature verification will only succeed with real, valid card numbers. Test cards above will generate tokens but may fail signature verification.
+**Note:** This test card uses a valid 6-digit BIN (409159) which allows signature verification to succeed.
 
 ### Manual Testing with curl
 
@@ -621,7 +619,7 @@ Encoding: Hex (Base16)
 
 **Step 3: Make request**
 ```bash
-curl -X GET "https://api.inoviopay.com/payment/token_service.cfm?CARD_PAN=5120342233150747&REQUEST_API_VERSION=2.22&UNIQUE_ID=test123456&SITE_ID=9201&REQUEST_RESPONSE_FORMAT=json" \
+curl -X GET "https://api.inoviopay.com/payment/token_service.cfm?CARD_PAN=409159111111111&REQUEST_API_VERSION=2.22&UNIQUE_ID=test123456&SITE_ID=9201&REQUEST_RESPONSE_FORMAT=json" \
   -H "X-SIGNATURE: <your-generated-signature>" \
   -H "X-TIMESTAMP: 20250129225200"
 ```
@@ -640,7 +638,7 @@ open http://localhost:3000
 # Or test with curl
 curl -X POST http://localhost:3000/api/generate-token \
   -H "Content-Type: application/json" \
-  -d '{"cardPan": "5120342233150747"}'
+  -d '{"cardPan": "409159111111111"}'
 ```
 
 ### Debugging Signature Issues
@@ -783,7 +781,7 @@ HMAC_SHA256_HEX("Password123", message)
 
 **5. Make request**
 ```http
-GET https://api.inoviopay.com/payment/token_service.cfm?CARD_PAN=4111111111111111&REQUEST_API_VERSION=2.22&UNIQUE_ID=abc123def456ghi789jkl012mno345pq&SITE_ID=9201&REQUEST_RESPONSE_FORMAT=json
+GET https://api.inoviopay.com/payment/token_service.cfm?CARD_PAN=409159111111111&REQUEST_API_VERSION=2.22&UNIQUE_ID=abc123def456ghi789jkl012mno345pq&SITE_ID=9201&REQUEST_RESPONSE_FORMAT=json
 X-SIGNATURE: a1b2c3d4e5f6...
 X-TIMESTAMP: 20250129225200
 ```

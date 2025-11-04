@@ -241,12 +241,10 @@
         <p class="subtitle">Test tokenization requests and verify HMAC-SHA256 response signatures</p>
 
         <div class="test-cards">
-            <h3>Test Card Numbers (click to use):</h3>
+            <h3>Test Card Number:</h3>
             <div style="font-size: 13px; color: #856404; line-height: 1.8;">
-                <p style="margin-bottom: 10px;"><strong>Note:</strong> Signature verification will only succeed with real card numbers. Test cards below may return token but fail signature verification.</p>
-                <div><code onclick="useCard('5120342233150747')">5120342233150747</code></div>
-                <div><code onclick="useCard('5454545454545454')">5454545454545454</code></div>
-                <div><code onclick="useCard('4111111111111111')">4111111111111111</code></div>
+                <p style="margin-bottom: 10px;"><strong>Note:</strong> This test card uses a valid BIN (409159) which allows signature verification to succeed.</p>
+                <div><code onclick="useCard('409159111111111')">409159111111111</code> (Expiry: 1229, CVV: 123)</div>
             </div>
         </div>
 
@@ -255,7 +253,7 @@
             <input
                 type="text"
                 id="cardNumber"
-                value="5120342233150747"
+                value="409159111111111"
                 maxlength="19"
             >
         </div>

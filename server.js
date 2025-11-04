@@ -129,7 +129,7 @@ function verifyResponseSignature(secretKey, receivedSignature, serverTimestamp, 
  * @example
  * POST /api/generate-token
  * {
- *   "cardPan": "5120342233150747"
+ *   "cardPan": "409159111111111"
  * }
  *
  * Response:
