@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inovio Tokenization Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .section {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 22px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .test-cards {
+            background: #fff9e6;
+            border: 1px solid #ffe066;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+
+        .test-cards h3 {
+            font-size: 14px;
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .test-cards code {
+            background: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            color: #495057;
+            cursor: pointer;
+        }
+
+        .test-cards code:hover {
+            background: #f0f0f0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: 'Courier New', monospace;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #667eea;
+            color: white;
+        }
+
+        button:hover:not(:disabled) {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        button.success {
+            background: #28a745;
+        }
+
+        button.success:hover:not(:disabled) {
+            background: #218838;
+        }
+
+        .loading {
+            text-align: center;
+            color: #667eea;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .results {
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .signature-status {
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .signature-status.valid {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+
+        .signature-status.invalid {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+
+        .signature-status .icon {
+            font-size: 24px;
+        }
+
+        .json-response {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .json-response h3 {
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .json-response pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 13px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .error-message h3 {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .payment-section {
+            opacity: 0.5;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .payment-section.enabled {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .success-message {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .hidden-fields {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .hidden-fields summary {
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .hidden-fields div {
+            margin: 5px 0;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Section 1: Token Verification Test -->
+        <div class="section">
+            <h1>Inovio Tokenization API Test</h1>
+            <p class="subtitle">Test tokenization requests and verify HMAC-SHA256 response signatures</p>
+
+            <div class="test-cards">
+                <h3>Test Card Numbers (click to use):</h3>
+                <div style="font-size: 13px; color: #856404; line-height: 1.8;">
+                    <p style="margin-bottom: 10px;"><strong>Note:</strong> Signature verification will only succeed with real card numbers. Test cards below may return token but fail signature verification.</p>
+                    <div><code onclick="useCard('5120342233150747')">5120342233150747</code></div>
+                    <div><code onclick="useCard('5454545454545454')">5454545454545454</code></div>
+                    <div><code onclick="useCard('4111111111111111')">4111111111111111</code></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="cardNumber">Card Number (PAN)</label>
+                <input
+                    type="text"
+                    id="cardNumber"
+                    value="5120342233150747"
+                    maxlength="19"
+                >
+            </div>
+
+            <button id="testBtn" onclick="testTokenization()">Test Tokenization & Verify Signature</button>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <div>Requesting token from Inovio API...</div>
+            </div>
+
+            <div class="error-message" id="errorMessage">
+                <h3>Error</h3>
+                <div id="errorText"></div>
+            </div>
+
+            <div class="results" id="results">
+                <div class="signature-status" id="signatureStatus">
+                    <span class="icon" id="statusIcon"></span>
+                    <span id="statusText"></span>
+                </div>
+
+                <div class="json-response">
+                    <h3>Response from Inovio Token Service</h3>
+                    <pre id="jsonResponse"></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Ready for Payment -->
+        <div class="section payment-section" id="paymentSection">
+            <h2>Ready for Payment</h2>
+            <p class="subtitle">Complete payment information to submit to gateway</p>
+
+            <form id="paymentForm">
+                <!-- Hidden token fields -->
+                <input type="hidden" name="token_guid" id="token_guid">
+                <input type="hidden" name="card_brand_name" id="card_brand_name">
+                <input type="hidden" name="card_type" id="card_type">
+                <input type="hidden" name="card_bank" id="card_bank">
+                <input type="hidden" name="card_country" id="card_country">
+                <input type="hidden" name="card_account_fund_source" id="card_account_fund_source">
+                <input type="hidden" name="card_class" id="card_class">
+                <input type="hidden" name="token_ip" id="token_ip">
+                <input type="hidden" name="token_reqid" id="token_reqid">
+
+                <div class="form-group">
+                    <label for="display_card_number">Card Number</label>
+                    <input
+                        type="text"
+                        id="display_card_number"
+                        readonly
+                        style="background: #f0f0f0;"
+                    >
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pmt_expiry">Expiration (MMYY)</label>
+                        <input
+                            type="text"
+                            id="pmt_expiry"
+                            name="pmt_expiry"
+                            value="1229"
+                            maxlength="4"
+                            placeholder="1229"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pmt_key">CVV</label>
+                        <input
+                            type="text"
+                            id="pmt_key"
+                            name="pmt_key"
+                            value="123"
+                            maxlength="4"
+                            placeholder="123"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <details class="hidden-fields">
+                    <summary>Hidden Form Fields (Token Data)</summary>
+                    <div><strong>TOKEN_GUID:</strong> <span id="display_token_guid"></span></div>
+                    <div><strong>CARD_BRAND_NAME:</strong> <span id="display_card_brand"></span></div>
+                    <div><strong>CARD_TYPE:</strong> <span id="display_card_type"></span></div>
+                    <div><strong>CARD_BANK:</strong> <span id="display_card_bank"></span></div>
+                    <div><strong>CARD_COUNTRY:</strong> <span id="display_card_country"></span></div>
+                    <div><strong>FUND_SOURCE:</strong> <span id="display_card_source"></span></div>
+                    <div><strong>CARD_CLASS:</strong> <span id="display_card_class"></span></div>
+                    <div><strong>TOKEN_REQID:</strong> <span id="display_token_reqid"></span></div>
+                </details>
+
+                <button type="submit" class="success" style="margin-top: 20px;">Submit Payment</button>
+
+                <div class="success-message" id="successMessage">
+                    <h3>Payment Form Ready</h3>
+                    <p>In production, this would submit to: <code>https://api.inoviopay.com/payment/pmt_service.cfm</code></p>
+                    <p style="margin-top: 10px;"><strong>Token GUID:</strong> <span id="success_token"></span></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const cardNumberInput = document.getElementById('cardNumber');
+        const testBtn = document.getElementById('testBtn');
+        const loadingDiv = document.getElementById('loading');
+        const errorDiv = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        const resultsDiv = document.getElementById('results');
+        const signatureStatus = document.getElementById('signatureStatus');
+        const statusIcon = document.getElementById('statusIcon');
+        const statusText = document.getElementById('statusText');
+        const jsonResponse = document.getElementById('jsonResponse');
+        const paymentSection = document.getElementById('paymentSection');
+        const paymentForm = document.getElementById('paymentForm');
+        const successMessage = document.getElementById('successMessage');
+        const displayCardNumber = document.getElementById('display_card_number');
+
+        let currentToken = null;
+
+        // Allow Enter key to submit
+        cardNumberInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                testTokenization();
+            }
+        });
+
+        function useCard(cardNumber) {
+            cardNumberInput.value = cardNumber;
+            cardNumberInput.focus();
+        }
+
+        async function testTokenization() {
+            const cardNumber = cardNumberInput.value.replace(/\s/g, '');
+
+            // Basic validation
+            if (!cardNumber) {
+                showError('Please enter a card number');
+                return;
+            }
+
+            if (cardNumber.length < 13 || cardNumber.length > 19) {
+                showError('Card number must be 13-19 digits');
+                return;
+            }
+
+            if (!/^\d+$/.test(cardNumber)) {
+                showError('Card number should only contain digits');
+                return;
+            }
+
+            // Hide previous results
+            hideError();
+            resultsDiv.classList.remove('show');
+            paymentSection.classList.remove('enabled');
+            successMessage.classList.remove('show');
+            loadingDiv.classList.add('show');
+            testBtn.disabled = true;
+
+            try {
+                const response = await fetch('/api/generate-token', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        cardPan: cardNumber
+                    })
+                });
+
+                const data = await response.json();
+
+                loadingDiv.classList.remove('show');
+                testBtn.disabled = false;
+
+                // Check if signature verification passed
+                if (data.success && data.token) {
+                    // Success - signature verified
+                    showSuccess(data, cardNumber);
+                } else if (data.error) {
+                    // Error (likely signature verification failed)
+                    showSignatureFailure(data);
+                } else {
+                    showError('Unexpected response format');
+                }
+
+            } catch (error) {
+                loadingDiv.classList.remove('show');
+                testBtn.disabled = false;
+                showError(`Network error: ${error.message}`);
+            }
+        }
+
+        function showSuccess(data, cardNumber) {
+            currentToken = data.token;
+
+            // Show success status
+            signatureStatus.className = 'signature-status valid';
+            statusIcon.textContent = '✅';
+            statusText.textContent = 'Signature Verified Successfully';
+
+            // Show formatted JSON response
+            jsonResponse.textContent = JSON.stringify(data.token, null, 2);
+
+            resultsDiv.classList.add('show');
+
+            // Enable payment section and populate fields
+            populatePaymentForm(data.token, cardNumber);
+            paymentSection.classList.add('enabled');
+        }
+
+        function showSignatureFailure(data) {
+            // Show failure status
+            signatureStatus.className = 'signature-status invalid';
+            statusIcon.textContent = '❌';
+            statusText.textContent = 'Signature Verification Failed';
+
+            // Show complete response including the token data and signature details
+            jsonResponse.textContent = JSON.stringify(data, null, 2);
+
+            resultsDiv.classList.add('show');
+
+            // Don't enable payment section on failure
+            paymentSection.classList.remove('enabled');
+        }
+
+        function populatePaymentForm(tokenData, cardNumber) {
+            // Populate hidden fields
+            document.getElementById('token_guid').value = tokenData.TOKEN_GUID || '';
+            document.getElementById('card_brand_name').value = tokenData.CARD_BRAND_NAME || '';
+            document.getElementById('card_type').value = tokenData.CARD_TYPE || '';
+            document.getElementById('card_bank').value = tokenData.CARD_BANK || '';
+            document.getElementById('card_country').value = tokenData.CARD_COUNTRY || '';
+            document.getElementById('card_account_fund_source').value = tokenData.CARD_ACCOUNT_FUND_SOURCE || '';
+            document.getElementById('card_class').value = tokenData.CARD_CLASS || '';
+            document.getElementById('token_ip').value = tokenData.TOKEN_IP || '';
+            document.getElementById('token_reqid').value = tokenData.TOKEN_REQID || '';
+
+            // Display values
+            const maskedCard = cardNumber.substring(0, 6) + '******' + cardNumber.substring(cardNumber.length - 4);
+            displayCardNumber.value = maskedCard;
+            document.getElementById('display_token_guid').textContent = tokenData.TOKEN_GUID || 'N/A';
+            document.getElementById('display_card_brand').textContent = tokenData.CARD_BRAND_NAME || 'N/A';
+            document.getElementById('display_card_type').textContent = tokenData.CARD_TYPE || 'N/A';
+            document.getElementById('display_card_bank').textContent = tokenData.CARD_BANK || 'N/A';
+            document.getElementById('display_card_country').textContent = tokenData.CARD_COUNTRY || 'N/A';
+            document.getElementById('display_card_source').textContent = tokenData.CARD_ACCOUNT_FUND_SOURCE || 'N/A';
+            document.getElementById('display_card_class').textContent = tokenData.CARD_CLASS || 'N/A';
+            document.getElementById('display_token_reqid').textContent = tokenData.TOKEN_REQID || 'N/A';
+        }
+
+        function showError(message) {
+            errorText.textContent = message;
+            errorDiv.classList.add('show');
+        }
+
+        function hideError() {
+            errorDiv.classList.remove('show');
+        }
+
+        // Payment form submission handler
+        paymentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const tokenGuid = document.getElementById('token_guid').value;
+            if (!tokenGuid) {
+                showError('Please generate a token first');
+                return;
+            }
+
+            // Show success message
+            document.getElementById('success_token').textContent = tokenGuid;
+            successMessage.classList.add('show');
+
+            console.log('Payment form data:', {
+                action: 'CCAUTHCAP',
+                token_guid: tokenGuid,
+                pmt_expiry: document.getElementById('pmt_expiry').value,
+                pmt_key: document.getElementById('pmt_key').value,
+                card_brand: document.getElementById('card_brand_name').value,
+                formData: new FormData(paymentForm)
+            });
+        });
+    </script>
+</body>
+</html>
