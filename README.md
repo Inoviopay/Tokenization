@@ -4,12 +4,7 @@ A comprehensive guide for integrating with the Inovio tokenization API using HMA
 
 ## Overview
 
-The Inovio tokenization API allows you to securely convert credit card numbers (PANs) into single-use tokens that can be used for payment processing. This approach:
-
-- **Reduces PCI compliance scope** - Card numbers never touch your servers
-- **Enhances security** - Tokens are single-use and cannot be reversed to obtain the original PAN
-- **Enables secure storage** - Store tokens instead of card numbers for recurring payments
-- **Maintains card metadata** - Receive brand, type, bank, and country information with each token
+The Inovio tokenization API converts credit card numbers (PANs) into tokens (TOKEN_GUID) that can be used for payment processing. The API returns card metadata including brand, type, bank, and country information along with the token.
 
 ## Prerequisites
 
@@ -680,9 +675,8 @@ async function tokenizeWithRetry(secretKey, siteId, cardPan, maxRetries = 3) {
    - For recurring payments, tokenize on file and reuse the same token
    - Do not tokenize the same card multiple times unnecessarily
 
-5. **Never log full card numbers**
+5. **Avoid logging full card numbers**
    - Log only last 4 digits for debugging
-   - PCI DSS prohibits storing full PAN
    - Tokens can be safely logged
 
 ### Secure Integration Pattern
@@ -714,15 +708,6 @@ app.post('/api/tokenize', async (req, res) => {
 });
 ```
 
-### PCI Compliance Considerations
-
-Tokenization significantly reduces PCI scope, but you must still:
-
-- Use HTTPS for all card data transmission
-- Never store full card numbers (even temporarily)
-- Log tokens, not PANs
-- Implement proper access controls
-- Regularly rotate credentials
 
 ## Using Tokens for Payments
 
