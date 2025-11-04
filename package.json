@@ -1,7 +1,7 @@
 {
   "name": "inovio-tokenization-test",
   "version": "1.0.0",
-  "description": "Test harness for Inovio ArgusPay tokenization API",
+  "description": "Test harness for Inovio tokenization API",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

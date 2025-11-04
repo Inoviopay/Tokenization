@@ -1,7 +1,7 @@
 /**
  * Inovio Tokenization API - Reference Implementation
  *
- * This server demonstrates how to integrate with the Inovio ArgusPay tokenization API,
+ * This server demonstrates how to integrate with the Inovio tokenization API,
  * including proper HMAC-SHA256 signature generation and verification.
  *
  * @author Inovio Payment Solutions

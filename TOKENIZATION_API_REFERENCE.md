@@ -1,6 +1,6 @@
-# Inovio ArgusPay Tokenization API Reference
+# Inovio Tokenization API Reference
 
-Complete reference documentation for the Inovio ArgusPay Tokenization Service (Version 2.22 - 4.13)
+Complete reference documentation for the Inovio Tokenization Service (Version 2.22 - 4.13)
 
 ---
 
@@ -845,4 +845,4 @@ PMT_EXPIRY=1229
 
 **Document Version:** 4.13 (Enhanced)
 **Last Updated:** January 2025
-**Maintained By:** Inovio ArgusPay Integration Team
+**Maintained By:** Inovio Integration Team

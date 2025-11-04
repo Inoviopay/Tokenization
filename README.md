@@ -1,6 +1,6 @@
 # Inovio Tokenization API - Integration Guide
 
-A Node.js reference implementation for integrating with the Inovio ArgusPay tokenization API using HMAC-SHA256 signatures.
+A Node.js reference implementation for integrating with the Inovio tokenization API using HMAC-SHA256 signatures.
 
 ## Overview
 
