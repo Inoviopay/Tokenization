@@ -671,8 +671,8 @@ async function tokenizeWithRetry(secretKey, siteId, cardPan, maxRetries = 3) {
    - Prevents replay attacks
 
 4. **Single-use tokens**
-   - Each token should be used for one transaction only
-   - For recurring payments, tokenize on file and reuse the same token
+   - Each token can be used for one transaction only
+   - For recurring payments, tokenize on file and reuse the same token (PMT_ID)
    - Do not tokenize the same card multiple times unnecessarily
 
 5. **Avoid logging full card numbers**
@@ -711,7 +711,7 @@ app.post('/api/tokenize', async (req, res) => {
 
 ## Using Tokens for Payments
 
-Once you have a token, use it in place of the card number for payment processing:
+Once you have a token (TOKEN_GUID), use it in place of the card number (PMT_NBR) for payment processing:
 
 ```bash
 curl "https://api.inoviopay.com/payment/pmt_service.cfm" \
@@ -729,9 +729,9 @@ curl "https://api.inoviopay.com/payment/pmt_service.cfm" \
   -d "request_response_format=JSON"
 ```
 
-**Note:** TOKEN_GUID replaces the card number. You still need the CVV (PMT_KEY) and expiry date for payment processing.
+**Note:** The ephermeral token (TOKEN_GUID) replaces the card number (PMT_NBR). You still need the CVV (PMT_KEY) and expiry date (PMT_EXPIRY) for payment processing.
 
-For complete payment API documentation, refer to the Inovio Payment API guide.
+For complete payment API documentation, refer to the Gateway Payment Service API.
 
 ## Testing Your Integration
 
@@ -741,7 +741,7 @@ For testing, use these credentials (provided by Inovio):
 
 - **Site ID:** `9201`
 - **Secret Key:** `Password123`
-- **API Version:** `2.22`
+- **API Version:** `4.12`
 
 ### Test Cards
 
